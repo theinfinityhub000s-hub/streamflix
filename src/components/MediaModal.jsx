@@ -7,6 +7,15 @@ export default function MediaModal({ movie, initialTab = 'stream', onClose }) {
   const [server, setServer] = useState(1);
   const [iframeKey, setIframeKey] = useState(0);
 
+  // Close on Escape key press
+  React.useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (e.key === 'Escape') onClose();
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [onClose]);
+
   if (!movie) return null;
 
   const streamUrl = getStreamingUrls(movie, server);
@@ -17,20 +26,25 @@ export default function MediaModal({ movie, initialTab = 'stream', onClose }) {
     setIframeKey(prev => prev + 1);
   };
 
+  const defaultPoster = "https://images.unsplash.com/photo-1536440136628-849c177e76a1?w=800&auto=format&fit=crop&q=80";
+
   return (
-    <div className="fixed inset-0 z-50 overflow-y-auto bg-black/85 backdrop-blur-md flex items-center justify-center p-2 sm:p-4 md:p-6 animate-fadeIn">
+    <div 
+      className="fixed inset-0 z-50 overflow-y-auto bg-black/85 backdrop-blur-md flex items-start justify-center p-2 sm:p-4 md:p-6 animate-fadeIn"
+      onClick={onClose}
+    >
       
       {/* Modal Dialog Card */}
       <div 
-        className="relative w-full max-w-5xl bg-[#181818] rounded-xl overflow-hidden shadow-2xl border border-white/10 my-8"
+        className="relative w-full max-w-5xl bg-[#181818] rounded-xl overflow-hidden shadow-2xl border border-white/10 my-4 sm:my-8"
         onClick={(e) => e.stopPropagation()}
       >
         
         {/* Close Button */}
         <button
           onClick={onClose}
-          className="absolute top-4 right-4 z-40 w-10 h-10 rounded-full bg-black/70 hover:bg-black/90 text-white flex items-center justify-center border border-white/20 transition-all cursor-pointer shadow-lg"
-          title="Close Modal"
+          className="absolute top-4 right-4 z-40 w-10 h-10 rounded-full bg-black/80 hover:bg-black text-white flex items-center justify-center border border-white/20 transition-all cursor-pointer shadow-lg hover:scale-110 active:scale-95"
+          title="Close Modal (Esc)"
         >
           <X className="w-5 h-5" />
         </button>
@@ -38,8 +52,12 @@ export default function MediaModal({ movie, initialTab = 'stream', onClose }) {
         {/* Modal Header / Banner */}
         <div className="relative h-60 sm:h-80 md:h-96 w-full overflow-hidden bg-neutral-950">
           <img
-            src={movie.backdrop_path || movie.poster_path}
+            src={movie.backdrop_path || movie.poster_path || defaultPoster}
             alt={movie.title}
+            onError={(e) => {
+              e.currentTarget.onerror = null;
+              e.currentTarget.src = defaultPoster;
+            }}
             className="w-full h-full object-cover object-center filter brightness-[0.7]"
           />
           <div className="absolute inset-0 bg-gradient-to-t from-[#181818] via-[#181818]/40 to-transparent" />
