@@ -11,6 +11,10 @@ export default function HeroBanner({ movie, onPlay, onDownload, onInfo }) {
       <img
         src={movie.backdrop_path}
         alt={movie.title}
+        onError={(e) => {
+          e.currentTarget.onerror = null;
+          e.currentTarget.src = "https://image.tmdb.org/t/p/original/xOMo8BRK7PfcJv9JCnx7s5200bm.jpg";
+        }}
         className="w-full h-full object-cover object-center filter brightness-[0.85]"
       />
 
