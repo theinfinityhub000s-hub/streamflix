@@ -108,6 +108,10 @@ export default function App() {
                         src={movie.poster_path || movie.backdrop_path}
                         alt={movie.title}
                         loading="lazy"
+                        onError={(e) => {
+                          e.currentTarget.onerror = null;
+                          e.currentTarget.src = 'https://images.unsplash.com/photo-1536440136628-849c177e76a1?w=800&auto=format&fit=crop&q=80';
+                        }}
                         className="w-full h-full object-cover group-hover:brightness-90 transition-all"
                       />
                       <div className="absolute top-2 left-2 bg-black/70 backdrop-blur-sm text-[10px] font-bold px-1.5 py-0.5 rounded text-white">
