@@ -52,30 +52,35 @@ export default function Header({ searchQuery, setSearchQuery, onSearchSubmit, on
           {/* Animated Search Bar */}
           <div className="relative flex items-center">
             {searchOpen ? (
-              <div className="flex items-center bg-black/80 border border-white/20 rounded-full px-3 py-1.5 transition-all w-52 sm:w-72 shadow-inner">
+              <div className="flex items-center bg-black/90 border border-white/25 rounded-full px-3 py-1.5 transition-all w-44 sm:w-64 md:w-72 shadow-lg">
                 <Search className="w-4 h-4 text-gray-400 mr-2 flex-shrink-0" />
                 <input
                   type="text"
-                  placeholder="Titles, people, genres..."
+                  placeholder="Titles, genres..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                   onKeyDown={(e) => e.key === 'Enter' && onSearchSubmit && onSearchSubmit()}
                   autoFocus
                   className="bg-transparent text-white text-xs sm:text-sm focus:outline-none w-full"
                 />
-                {searchQuery && (
-                  <button onClick={() => setSearchQuery('')} className="text-gray-400 hover:text-white">
-                    <X className="w-4 h-4" />
-                  </button>
-                )}
-                <button onClick={() => setSearchOpen(false)} className="ml-2 text-gray-400 hover:text-white">
+                <button 
+                  onClick={() => {
+                    if (searchQuery) {
+                      setSearchQuery('');
+                    } else {
+                      setSearchOpen(false);
+                    }
+                  }} 
+                  className="text-gray-400 hover:text-white p-1 transition-colors flex-shrink-0 cursor-pointer"
+                  title={searchQuery ? "Clear Search" : "Close Search"}
+                >
                   <X className="w-4 h-4" />
                 </button>
               </div>
             ) : (
               <button 
                 onClick={() => setSearchOpen(true)}
-                className="p-2 text-gray-300 hover:text-white transition-colors rounded-full hover:bg-white/10"
+                className="p-2 text-gray-300 hover:text-white transition-colors rounded-full hover:bg-white/10 cursor-pointer"
                 title="Search Movies"
               >
                 <Search className="w-5 h-5" />
