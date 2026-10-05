@@ -59,6 +59,10 @@ export default function MovieRow({ title, items, onSelectMovie, onPlayMovie, onD
                   src={movie.backdrop_path || movie.poster_path}
                   alt={movie.title}
                   loading="lazy"
+                  onError={(e) => {
+                    e.currentTarget.onerror = null;
+                    e.currentTarget.src = 'https://images.unsplash.com/photo-1536440136628-849c177e76a1?w=800&auto=format&fit=crop&q=80';
+                  }}
                   className="w-full h-full object-cover object-center group-hover/card:brightness-90 transition-all duration-300"
                 />
 
